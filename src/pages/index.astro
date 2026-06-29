@@ -1,0 +1,228 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import currently from '../data/currently.json';
+
+const articles = (await getCollection('notebook', ({ data }) =>
+  !data.draft && data.lang === 'en'
+)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+
+const iconMap: Record<string, string> = {
+  'book': 'assets/icons/book.svg',
+  'television': 'assets/icons/television.svg',
+  'film-slate': 'assets/icons/film-slate.svg',
+  'microphone': 'assets/icons/microphone.svg',
+  'headphones': 'assets/icons/headphones.svg',
+};
+---
+
+<Base>
+  <div class="topbar"></div>
+
+  <nav>
+    <div class="wrap nav-in">
+      <a class="logo" href="/">
+        <img src="/assets/mark-seal.svg" alt="FA seal" />
+        <span class="name">Felipe Aguilera</span>
+      </a>
+      <div class="nav-links">
+        <a href="#notebook">Notebook</a>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="/cv">CV</a>
+        <span class="lang">
+          <a href="/" class="active">EN</a>/<a href="/es">ES</a>
+        </span>
+        <a href="#hello" class="nav-cta">Say hello</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap narrow">
+      <img class="seal" src="/assets/mark-seal.svg" alt="FA seal" />
+      <h1 class="mast">Felipe Aguilera</h1>
+      <p class="mast-sub">Brand and communication strategist.</p>
+      <p class="mast-cred">Thinking out loud about culture, technology, and the craft of making things clear. Part notebook, part magazine, entirely mine.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#notebook">Read the notebook</a>
+        <a class="btn ghost" href="#about">More about me</a>
+      </div>
+    </div>
+    <div class="wrap hero-orn"><div class="fleuron"><span>&#10086;</span></div></div>
+  </header>
+
+  <section class="cream" id="notebook">
+    <div class="wrap">
+      <div class="eyebrow">Notebook</div>
+      <h2>Recent <span class="o">writing</span><span class="dot">.</span></h2>
+      <p class="lead">I write about where <strong>culture, technology, and brand</strong> meet, usually starting from something I can't stop thinking about, a film, a launch, a small shift in how we live, and following it until it says something useful. I'm less interested in hot takes than in <strong>figuring things out in the open</strong>. It's how I think, and the part of the week I enjoy most. New pieces land most Fridays.</p>
+      <div class="cards">
+        {articles.map((article) => (
+          <a class="card" href={`/notebook/${article.slug}`}>
+            {article.data.cover && (
+              <div class="thumb" style={`background-image:url('${article.data.cover}')`}></div>
+            )}
+            <div class="cbody">
+              <span class="meta">{article.data.category}</span>
+              <h3>{article.data.title}</h3>
+              <p>{article.data.description}</p>
+              <span class="more">Read →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div style="text-align:center;margin-top:30px;">
+        <a class="textlink" href="https://felipeaguilera.substack.com">All writing →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="currently">
+    <div class="wrap">
+      <div class="eyebrow">Currently</div>
+      <h2>What I'm <span class="o">into</span> right now<span class="dot">.</span></h2>
+      <p class="lead">A small, living log of what I'm reading, watching, and listening to. It changes often, that's the point.</p>
+      <div class="nowgrid">
+        <div class="nowcol">
+          <span class="meta">Reading</span>
+          <ul>
+            {currently.reading.map((item) => (
+              <li>
+                <img class="ic" src={`/${iconMap[item.icon]}`} alt="" />
+                <a href={item.url}>{item.title}</a> <em>&middot; {item.author}</em>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="nowcol">
+          <span class="meta">Watching</span>
+          <ul>
+            {currently.watching.map((item) => (
+              <li>
+                <img class="ic" src={`/${iconMap[item.icon]}`} alt="" />
+                <a href={item.url}>{item.title}</a> <em>&middot; {item.author}</em>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="nowcol">
+          <span class="meta">Listening</span>
+          <ul>
+            {currently.listening.map((item) => (
+              <li>
+                <img class="ic" src={`/${iconMap[item.icon]}`} alt="" />
+                <a href={item.url}>{item.title}</a> <em>&middot; {item.author}</em>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <p style="font-style:italic;color:var(--muted);font-size:14px;margin-top:18px;">Updated often. Links go to where you can find each, or to my review when I've written one.</p>
+    </div>
+  </section>
+
+  <section class="cream" id="work">
+    <div class="wrap">
+      <div class="eyebrow">A few things I've made</div>
+      <h2>From the <span class="o">archive</span><span class="dot">.</span></h2>
+      <div class="cards">
+        <div class="card">
+          <div class="thumb" style="background-image:url('/assets/inzider.jpg')"></div>
+          <div class="cbody"><span class="meta">EXP-204417 &middot; Editorial</span><h3>Inzider Magazine</h3><p>A print magazine I founded and edited at Zmart: covers, features, advertising, multiple editions across five years.</p></div>
+        </div>
+        <div class="card">
+          <div class="thumb" style="background-image:url('/assets/zmart.jpg')"></div>
+          <div class="cbody"><span class="meta">EXP-118235 &middot; Brand &amp; digital</span><h3>Zmart.cl</h3><p>A decade leading the brand and customer experience: omnichannel, console launches, and a Great Place to Work culture.</p></div>
+        </div>
+        <div class="card">
+          <div class="thumb" style="background-image:url('/assets/mifactoria.jpg')"></div>
+          <div class="cbody"><span class="meta">EXP-339061 &middot; Ecommerce</span><h3>Mi Factoria</h3><p>A brand and Shopify storefront, turning a functional shop into a coherent identity.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="brandstrip center" id="record">
+    <div class="wrap">
+      <div class="eyebrow">Along the way</div>
+      <p>I've had the luck to work with <b>Zmart, Metro de Santiago, Sodimac, Tetra Pak, Codelco, Nintendo, PlayStation,</b> and <b>Xbox.</b></p>
+      <a class="ll" href="https://www.linkedin.com/in/felipeaguilera">Full history on LinkedIn →</a>
+    </div>
+  </section>
+
+  <section id="background" class="cream">
+    <div class="wrap">
+      <div class="eyebrow">Background</div>
+      <h2>The track record <span class="o">behind the work</span><span class="dot">.</span></h2>
+      <div class="exp-list">
+        <div class="exp-row">
+          <div class="exp-row-meta">2024 &mdash; Now<br />EVO Creative Lab &middot; Remote</div>
+          <div class="exp-row-role">Founder &amp; Creative Consultant<span>Brand strategy &middot; Content &middot; Digital &middot; Clients across LATAM and Europe</span></div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-row-meta">2013 &mdash; 2024<br />Zmart Games &middot; Santiago</div>
+          <div class="exp-row-role">Marketing Manager &amp; UX Director<span>A decade. 25+ stores. Chile's leading gaming and geek retail chain.</span></div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-row-meta">2005 &mdash; 2013<br />Elemento Media Design</div>
+          <div class="exp-row-role">Head of Digital Projects<span>Metro de Santiago &middot; Tetra Pak &middot; Suzuki &middot; Sodimac &middot; Codelco</span></div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-row-meta">1998 &mdash; 2005<br />Entel &middot; Lan-Z &middot; VEEgroup</div>
+          <div class="exp-row-role">Early career: design, digital &amp; brand<span>Brand content &middot; Multimedia design &middot; Community building</span></div>
+        </div>
+      </div>
+      <a class="textlink" href="/cv">Full CV →</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="eyebrow">The longer story</div>
+      <div class="about">
+        <div>
+          <h2>Long enough at this to know what <span class="o">actually matters</span><span class="dot">.</span></h2>
+          <p class="lead dropcap">I led marketing and customer experience at <strong>Zmart</strong> for a decade, and built and edited its magazine, <strong>Inzider</strong>, along the way. Before that, digital projects for <strong>Metro de Santiago, Sodimac, Tetra Pak,</strong> and <strong>Codelco</strong>. Today I work independently through <strong>EVO Creative Lab</strong>, taking on brand strategy, content, and digital work for clients across sectors. I'm in Santiago, bilingual, and built for remote work, and I write because it's how I think.</p>
+          <a class="textlink" href="#">Read the full story →</a>
+        </div>
+        <img class="portrait" src="/assets/portrait.png" alt="Felipe Aguilera" />
+      </div>
+    </div>
+  </section>
+
+  <section class="cream center" id="hello">
+    <div class="wrap narrow">
+      <div class="fleuron"><span>&#10086;</span></div>
+      <div class="eyebrow" style="margin-top:30px;">Say hello</div>
+      <h2>Building something, or just want to <span class="o">talk</span><span class="dot">?</span></h2>
+      <p class="lead">If you've got a project, that's what <strong>EVO Creative Lab</strong> is for, where I help businesses figure out what they actually need: <strong>first the case, then the strategy</strong>. If you'd rather just follow the writing or say hello, that's just as welcome.</p>
+      <div class="cta-row" style="margin-top:30px;">
+        <a class="btn primary" href="https://evo.cl">Visit EVO Creative Lab</a>
+        <a class="btn ghost" href="mailto:felipe@faguilera.com">Email me</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-orn">&#10086;</div>
+      <div class="foot-in">
+        <div>
+          <a class="logo" href="/">
+            <img src="/assets/mark-seal-white.svg" alt="FA seal" />
+            <span class="name">Felipe Aguilera</span>
+          </a>
+          <p class="foot-tag">Strategist by trade, curious by nature. Santiago, Chile.</p>
+        </div>
+        <div class="foot-links">
+          <a href="/cv">CV</a>
+          <a href="https://www.linkedin.com/in/felipeaguilera">LinkedIn</a>
+          <a href="https://felipeaguilera.substack.com">Substack</a>
+          <a href="mailto:felipe@faguilera.com">Email</a>
+        </div>
+      </div>
+      <div class="foot-copy">&copy; 2026 Felipe Aguilera &middot; faguilera.com</div>
+    </div>
+  </footer>
+</Base>

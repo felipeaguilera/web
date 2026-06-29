@@ -1,0 +1,23 @@
+{
+  "reading": [
+    { "icon": "book", "title": "The Fellowship of the Ring", "author": "J.R.R. Tolkien", "url": "https://www.goodreads.com/search?q=The+Fellowship+of+the+Ring+Tolkien" },
+    { "icon": "book", "title": "The Practice", "author": "Seth Godin", "url": "https://www.goodreads.com/search?q=The+Practice+Seth+Godin" },
+    { "icon": "book", "title": "What Customers Crave", "author": "Nicholas J. Webb", "url": "https://www.goodreads.com/search?q=What+Customers+Crave+Webb" },
+    { "icon": "book", "title": "The War of Art", "author": "Steven Pressfield", "url": "https://www.goodreads.com/search?q=The+War+of+Art+Pressfield" },
+    { "icon": "book", "title": "Sweet Bean Paste", "author": "Durian Sukegawa", "url": "https://www.goodreads.com/search?q=Sweet+Bean+Paste+novel" }
+  ],
+  "watching": [
+    { "icon": "television", "title": "Dutton Ranch", "author": "Paramount+", "url": "https://www.imdb.com/find/?q=Dutton+Ranch" },
+    { "icon": "film-slate", "title": "Michael", "author": "film", "url": "https://www.imdb.com/find/?q=Michael+movie" },
+    { "icon": "television", "title": "Terapia Alternativa", "author": "Disney+", "url": "https://www.imdb.com/find/?q=Terapia+Alternativa" },
+    { "icon": "television", "title": "Friends & Neighbors, S2", "author": "Apple TV+", "url": "https://www.imdb.com/find/?q=Your+Friends+and+Neighbors" },
+    { "icon": "television", "title": "Widow's Bay", "author": "Apple TV+", "url": "https://www.imdb.com/find/?q=Widows+Bay" }
+  ],
+  "listening": [
+    { "icon": "microphone", "title": "The History of Rome", "author": "Mike Duncan, podcast", "url": "https://en.wikipedia.org/wiki/The_History_of_Rome_(podcast)" },
+    { "icon": "headphones", "title": "The Let Them Theory", "author": "Mel Robbins", "url": "https://www.audible.com/search?keywords=The+Let+Them+Theory" },
+    { "icon": "headphones", "title": "Viento y Verdades", "author": "Brandon Sanderson", "url": "https://www.audible.com/search?keywords=Viento+y+Verdades+Sanderson" },
+    { "icon": "headphones", "title": "Building a StoryBrand 2.0", "author": "Donald Miller", "url": "https://www.audible.com/search?keywords=Building+a+StoryBrand" },
+    { "icon": "headphones", "title": "Slow Productivity", "author": "Cal Newport", "url": "https://www.audible.com/search?keywords=Slow+Productivity+Newport" }
+  ]
+}

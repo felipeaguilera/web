@@ -1,0 +1,240 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import currently from '../data/currently.json';
+
+// Spanish articles — if none exist yet, falls back to EN articles
+const esArticles = await getCollection('notebook', ({ data }) =>
+  !data.draft && data.lang === 'es'
+);
+const enArticles = await getCollection('notebook', ({ data }) =>
+  !data.draft && data.lang === 'en'
+);
+// Show ES articles if they exist, otherwise show EN articles with ES labels
+const articles = (esArticles.length > 0 ? esArticles : enArticles)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const iconMap: Record<string, string> = {
+  'book': 'assets/icons/book.svg',
+  'television': 'assets/icons/television.svg',
+  'film-slate': 'assets/icons/film-slate.svg',
+  'microphone': 'assets/icons/microphone.svg',
+  'headphones': 'assets/icons/headphones.svg',
+};
+---
+
+<Base
+  title="Felipe Aguilera · Estratega y escritor"
+  description="Estratega de marca y comunicación. Escribiendo sobre cultura, tecnología y el oficio de hacer las cosas claras."
+  lang="es"
+>
+  <div class="topbar"></div>
+
+  <nav>
+    <div class="wrap nav-in">
+      <a class="logo" href="/es">
+        <img src="/assets/mark-seal.svg" alt="Sello FA" />
+        <span class="name">Felipe Aguilera</span>
+      </a>
+      <div class="nav-links">
+        <a href="#notebook">Cuaderno</a>
+        <a href="#work">Trabajo</a>
+        <a href="#about">Sobre mí</a>
+        <a href="/cv-es">CV</a>
+        <span class="lang">
+          <a href="/">EN</a>/<a href="/es" class="active">ES</a>
+        </span>
+        <a href="#hello" class="nav-cta">Escríbeme</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap narrow">
+      <img class="seal" src="/assets/mark-seal.svg" alt="Sello FA" />
+      <h1 class="mast">Felipe Aguilera</h1>
+      <p class="mast-sub">Estratega de marca y comunicación.</p>
+      <p class="mast-cred">Pensando en voz alta sobre cultura, tecnología y el oficio de hacer las cosas claras. Mitad cuaderno, mitad revista, enteramente mío.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#notebook">Leer el cuaderno</a>
+        <a class="btn ghost" href="#about">Sobre mí</a>
+      </div>
+    </div>
+    <div class="wrap hero-orn"><div class="fleuron"><span>&#10086;</span></div></div>
+  </header>
+
+  <section class="cream" id="notebook">
+    <div class="wrap">
+      <div class="eyebrow">Cuaderno</div>
+      <h2>Escritos <span class="o">recientes</span><span class="dot">.</span></h2>
+      <p class="lead">Escribo sobre el cruce entre <strong>cultura, tecnología y marca</strong>, casi siempre partiendo de algo que no puedo dejar de pensar: una película, un lanzamiento, un pequeño cambio en cómo vivimos, y lo sigo hasta que dice algo útil. Me interesan menos las opiniones rápidas que <strong>pensar en voz alta y a la vista</strong>. Es como pienso, y la parte de la semana que más disfruto. Publico algo nuevo casi todos los viernes.</p>
+      <div class="cards">
+        {articles.map((article) => (
+          <a class="card" href={`/notebook/${article.slug}`}>
+            {article.data.cover && (
+              <div class="thumb" style={`background-image:url('${article.data.cover}')`}></div>
+            )}
+            <div class="cbody">
+              <span class="meta">{article.data.category}</span>
+              <h3>{article.data.title}</h3>
+              <p>{article.data.description}</p>
+              <span class="more">Leer →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div style="text-align:center;margin-top:30px;">
+        <a class="textlink" href="https://felipeaguilera.substack.com">Todo el cuaderno →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="currently">
+    <div class="wrap">
+      <div class="eyebrow">Ahora mismo</div>
+      <h2>Lo que me tiene <span class="o">ocupado</span><span class="dot">.</span></h2>
+      <p class="lead">Un registro vivo de lo que leo, veo y escucho. Cambia seguido, ese es el punto.</p>
+      <div class="nowgrid">
+        <div class="nowcol">
+          <span class="meta">Leyendo</span>
+          <ul>
+            {currently.reading.map((item) => (
+              <li>
+                <img class="ic" src={`/${iconMap[item.icon]}`} alt="" />
+                <a href={item.url}>{item.title}</a> <em>&middot; {item.author}</em>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="nowcol">
+          <span class="meta">Viendo</span>
+          <ul>
+            {currently.watching.map((item) => (
+              <li>
+                <img class="ic" src={`/${iconMap[item.icon]}`} alt="" />
+                <a href={item.url}>{item.title}</a> <em>&middot; {item.author}</em>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="nowcol">
+          <span class="meta">Escuchando</span>
+          <ul>
+            {currently.listening.map((item) => (
+              <li>
+                <img class="ic" src={`/${iconMap[item.icon]}`} alt="" />
+                <a href={item.url}>{item.title}</a> <em>&middot; {item.author}</em>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <p style="font-style:italic;color:var(--muted);font-size:14px;margin-top:18px;">Se actualiza seguido. Los links van a donde puedes encontrar cada uno, o a mi reseña si es que ya escribí una.</p>
+    </div>
+  </section>
+
+  <section class="cream" id="work">
+    <div class="wrap">
+      <div class="eyebrow">Algunas cosas que hice</div>
+      <h2>Del <span class="o">archivo</span><span class="dot">.</span></h2>
+      <div class="cards">
+        <div class="card">
+          <div class="thumb" style="background-image:url('/assets/inzider.jpg')"></div>
+          <div class="cbody"><span class="meta">EXP-204417 &middot; Editorial</span><h3>Revista Inzider</h3><p>Una revista impresa que fundé y edité en Zmart: portadas, reportajes, publicidad, múltiples ediciones a lo largo de cinco años.</p></div>
+        </div>
+        <div class="card">
+          <div class="thumb" style="background-image:url('/assets/zmart.jpg')"></div>
+          <div class="cbody"><span class="meta">EXP-118235 &middot; Marca y digital</span><h3>Zmart.cl</h3><p>Una década liderando la marca y la experiencia del cliente: omnicanalidad, lanzamientos de consolas y una cultura Great Place to Work.</p></div>
+        </div>
+        <div class="card">
+          <div class="thumb" style="background-image:url('/assets/mifactoria.jpg')"></div>
+          <div class="cbody"><span class="meta">EXP-339061 &middot; Ecommerce</span><h3>Mi Factoria</h3><p>Una marca y tienda Shopify: convertir una tienda funcional en una identidad coherente.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="brandstrip center" id="record">
+    <div class="wrap">
+      <div class="eyebrow">En el camino</div>
+      <p>Tuve la suerte de trabajar con <b>Zmart, Metro de Santiago, Sodimac, Tetra Pak, Codelco, Nintendo, PlayStation</b> y <b>Xbox.</b></p>
+      <a class="ll" href="https://www.linkedin.com/in/felipeaguilera">Historial completo en LinkedIn →</a>
+    </div>
+  </section>
+
+  <section id="background" class="cream">
+    <div class="wrap">
+      <div class="eyebrow">Trayectoria</div>
+      <h2>El recorrido <span class="o">detrás del trabajo</span><span class="dot">.</span></h2>
+      <div class="exp-list">
+        <div class="exp-row">
+          <div class="exp-row-meta">2024 &mdash; Hoy<br />EVO Creative Lab &middot; Remoto</div>
+          <div class="exp-row-role">Fundador y Consultor Creativo<span>Estrategia de marca &middot; Contenido &middot; Digital &middot; Clientes en LATAM y Europa</span></div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-row-meta">2013 &mdash; 2024<br />Zmart Games &middot; Santiago</div>
+          <div class="exp-row-role">Gerente de Marketing y Director UX<span>Una década. 25+ tiendas. La cadena líder de retail gaming y geek en Chile.</span></div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-row-meta">2005 &mdash; 2013<br />Elemento Media Design</div>
+          <div class="exp-row-role">Director de Proyectos Digitales<span>Metro de Santiago &middot; Tetra Pak &middot; Suzuki &middot; Sodimac &middot; Codelco</span></div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-row-meta">1998 &mdash; 2005<br />Entel &middot; Lan-Z &middot; VEEgroup</div>
+          <div class="exp-row-role">Primeros años: diseño, digital y marca<span>Contenido de marca &middot; Diseño multimedia &middot; Comunidades digitales</span></div>
+        </div>
+      </div>
+      <a class="textlink" href="/cv-es">CV completo →</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="eyebrow">La historia larga</div>
+      <div class="about">
+        <div>
+          <h2>Los suficientes años como para saber qué <span class="o">realmente importa</span><span class="dot">.</span></h2>
+          <p class="lead dropcap">Lideré marketing y experiencia de cliente en <strong>Zmart</strong> por una década, y fundé y edité su revista, <strong>Inzider</strong>, en el camino. Antes, proyectos digitales para <strong>Metro de Santiago, Sodimac, Tetra Pak</strong> y <strong>Codelco</strong>. Hoy trabajo de forma independiente a través de <strong>EVO Creative Lab</strong>, en estrategia de marca, contenido y digital para clientes de distintos sectores. Estoy en Santiago, bilingüe, y hecho para el trabajo remoto. Escribo porque así pienso.</p>
+          <a class="textlink" href="#">La historia completa →</a>
+        </div>
+        <img class="portrait" src="/assets/portrait.png" alt="Felipe Aguilera" />
+      </div>
+    </div>
+  </section>
+
+  <section class="cream center" id="hello">
+    <div class="wrap narrow">
+      <div class="fleuron"><span>&#10086;</span></div>
+      <div class="eyebrow" style="margin-top:30px;">Escríbeme</div>
+      <h2>¿Tienes un proyecto o simplemente quieres <span class="o">conversar</span><span class="dot">?</span></h2>
+      <p class="lead">Si tienes un proyecto, para eso está <strong>EVO Creative Lab</strong>, donde ayudo a las empresas a entender qué necesitan de verdad: <strong>primero el diagnóstico, después la estrategia</strong>. Si prefieres solo seguir los escritos o saludar, también es bienvenido.</p>
+      <div class="cta-row" style="margin-top:30px;">
+        <a class="btn primary" href="https://evo.cl">Visitar EVO Creative Lab</a>
+        <a class="btn ghost" href="mailto:felipe@faguilera.com">Escríbeme</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-orn">&#10086;</div>
+      <div class="foot-in">
+        <div>
+          <a class="logo" href="/es">
+            <img src="/assets/mark-seal-white.svg" alt="Sello FA" />
+            <span class="name">Felipe Aguilera</span>
+          </a>
+          <p class="foot-tag">Estratega de oficio, curioso por naturaleza. Santiago, Chile.</p>
+        </div>
+        <div class="foot-links">
+          <a href="/cv-es">CV</a>
+          <a href="https://www.linkedin.com/in/felipeaguilera">LinkedIn</a>
+          <a href="https://felipeaguilera.substack.com">Substack</a>
+          <a href="mailto:felipe@faguilera.com">Email</a>
+        </div>
+      </div>
+      <div class="foot-copy">&copy; 2026 Felipe Aguilera &middot; faguilera.com</div>
+    </div>
+  </footer>
+</Base>
